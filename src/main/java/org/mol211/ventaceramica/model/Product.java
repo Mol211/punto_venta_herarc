@@ -1,11 +1,10 @@
 package org.mol211.ventaceramica.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Product {
     private Long id;
-    private Integer code;
+    private String code;
     private String name;
     private String description;
     private Double price;
@@ -21,11 +20,11 @@ public class Product {
         this.id = id;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -78,9 +77,24 @@ public class Product {
     }
 
     public Product() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Product(Long id, Integer code, String name, String description, Double price, Integer stock, Long category_id, LocalDateTime localDateTime) {
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", categoryId=" + categoryId +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
+    public Product(Long id, String code, String name, String description, Double price, Integer stock, Long category_id, LocalDateTime localDateTime) {
         this.id = id;
         this.code = code;
         this.name = name;

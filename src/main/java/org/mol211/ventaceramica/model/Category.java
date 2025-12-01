@@ -15,6 +15,16 @@ public class Category {
         this.createdAt = createdAt;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
@@ -48,5 +58,6 @@ public class Category {
     }
 
     public Category() {
+        this.createdAt = LocalDateTime.now();
     }
 }
