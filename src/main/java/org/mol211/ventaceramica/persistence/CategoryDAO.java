@@ -31,16 +31,16 @@ public class CategoryDAO {
     private final Logger logger = LoggerFactory.getLogger(CategoryDAO.class);
 
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
-    private final String SQL_COUNT = "SELECT COUNT";
-    private final String SQL_FIND_BY_NAME = "SELECT id, name, description, created_at FROM categories WHERE name = ?";
+    private final String SQL_COUNT = "SELECT COUNT(*) FROM products WHERE category_id = ?";
+    private final String SQL_FIND_BY_NAME = "SELECT id, name, description, created_at FROM categories WHERE name ILIKE ? ORDER BY name";
     private final String SQL_FIND_ALL = "SELECT id, name, description, created_at FROM categories";
     private  final String SQL_FIND_BY_ID = "SELECT id, name, description, created_at FROM categories WHERE id = ?";
     private final String SQL_DELETE = "DELETE FROM categories WHERE id = ?";
+    private final String SQL_SAVE = "INSERT INTO categories (name, description, created_at) VALUES(?,?,?)";
 
     public Category save(Category c){
         //Consulta SQL
-        String sql = "INSERT INTO categories (name, description, created_at) " +
-                "VALUES(?,?,?)";
+        String sql = SQL_SAVE;
         //Abrimos conexión y preparamos consulta
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -99,7 +99,7 @@ public class CategoryDAO {
     public Category findById(Long id) {
         Category c = null;
         try (Connection con = dbConnection.getConnection();
-            PreparedStatement st = con.prepareStatement(SQL_FIND_ALL)){
+            PreparedStatement st = con.prepareStatement(SQL_FIND_BY_ID)){
             st.setLong(1,id);
 
             try(ResultSet rs = st.executeQuery()){
@@ -113,15 +113,55 @@ public class CategoryDAO {
         }
         return c;
     }
-    public void delete(Long id) {
+    public void delete(Category c) {
+
+        int numProducts = countProductsByCategory(c.getId());
+
+        if (numProducts > 0) {
+            throw new IllegalStateException(
+                    "No se puede eliminar la categoría "+c.getName()+" porque tiene "+numProducts+" productos asociados");
+        }
         try (Connection con = dbConnection.getConnection();
         PreparedStatement ps = con.prepareStatement(SQL_DELETE)){
-            ps.setLong(1, id);
+            ps.setLong(1, c.getId());
             ps.executeUpdate();
         }catch (SQLException e) {
-            logger.error("Error el eliminar la categoria con ID: {}", id, e);
+            logger.error("Error el eliminar la categoria con ID: {}", c.getId(), e);
         }
     }
-    public List<Category> findByName(String name)
+    public List<Category> findByName(String name) {
+        List<Category> lists = new ArrayList<>();
+        try(Connection conn = dbConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_NAME)){
+            ps.setString(1, "%"+name+"%");
+            try(ResultSet rs = ps.executeQuery()){
+                while (rs.next()){
+                    lists.add(rsToCategory(rs));
+                }
+            }
+        }catch (SQLException e) {
+            logger.error("Error al buscar el nombre: {}",name, e);
+        }
+        return lists;
+    }
+    public int countProductsByCategory(Long id) {
+
+        int numProducts = 0;
+
+        try(Connection conn = dbConnection.getConnection();
+        PreparedStatement st = conn.prepareStatement(SQL_COUNT)){
+
+            st.setLong(1, id);
+
+            try(ResultSet rs = st.executeQuery()){
+                if (rs.next()) {
+                    numProducts = rs.getInt(1);
+                }
+            }
+            }catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    return numProducts;
+    }
 
 }
