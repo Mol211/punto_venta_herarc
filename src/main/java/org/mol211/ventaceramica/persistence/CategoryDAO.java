@@ -31,8 +31,11 @@ public class CategoryDAO {
     private final Logger logger = LoggerFactory.getLogger(CategoryDAO.class);
 
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
-
+    private final String SQL_COUNT = "SELECT COUNT";
+    private final String SQL_FIND_BY_NAME = "SELECT id, name, description, created_at FROM categories WHERE name = ?";
     private final String SQL_FIND_ALL = "SELECT id, name, description, created_at FROM categories";
+    private  final String SQL_FIND_BY_ID = "SELECT id, name, description, created_at FROM categories WHERE id = ?";
+    private final String SQL_DELETE = "DELETE FROM categories WHERE id = ?";
 
     public Category save(Category c){
         //Consulta SQL
@@ -93,4 +96,32 @@ public class CategoryDAO {
         }
         return categories;
     }
+    public Category findById(Long id) {
+        Category c = null;
+        try (Connection con = dbConnection.getConnection();
+            PreparedStatement st = con.prepareStatement(SQL_FIND_ALL)){
+            st.setLong(1,id);
+
+            try(ResultSet rs = st.executeQuery()){
+                if(rs.next()) {
+                    c = rsToCategory(rs);
+                }
+            }
+
+        }catch (SQLException e) {
+            logger.error("Error al cargar las categorias",e);
+        }
+        return c;
+    }
+    public void delete(Long id) {
+        try (Connection con = dbConnection.getConnection();
+        PreparedStatement ps = con.prepareStatement(SQL_DELETE)){
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        }catch (SQLException e) {
+            logger.error("Error el eliminar la categoria con ID: {}", id, e);
+        }
+    }
+    public List<Category> findByName(String name)
+
 }
