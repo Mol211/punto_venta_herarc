@@ -25,10 +25,10 @@ public class ProductDAO {
     //FindLowStock -> Devuelve los que tienen poco stock
     //UpdateStock
     //search(String query) -> Devuelve lista de productos
-    private final String SQL_FIND_ALL="SELECT * FROM products ORDER BY name";
+    private final String SQL_FIND_ALL="SELECT id, code, name, description, price, stock, category_id, created_at FROM products ORDER BY name";
     private final String SQL_FIND_BY_ID = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
-    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id, created_at) " +
-            "VALUES(?,?,?,?,?,?,?)";
+    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id) " +
+            "VALUES(?,?,?,?,?,?) RETOURNING id";
     private final String SQL_UPDATE = "UPDATE products SET code = ?, name = ?, description = ?, " +
             "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
     private final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
@@ -39,9 +39,11 @@ public class ProductDAO {
     private final String SQL_FIND_BY_CATEGORY = "SELECT id, code, name, description, price, stock, category_id, created_at " +
             "FROM products WHERE category_id = ? ORDER BY name";
     private final String SQL_FIND_LOW_STOCK = "SELECT id, code, name, description, price, stock, category_id, created_at" +
-            "FROM products WHERE stock < 5";
+            "FROM products WHERE stock < ? ORDER BY stock ASC";
     private final String SQL_UPDATE_STOCK = "UPDATE products SET stock = ? WHERE id = ?";
-    private final String SQL_SEARCH_BY_QUERY = "";
+    private final String SQL_SEARCH_BY_QUERY = "SELECT id, code, name, description, price, stock, category_id, created_at " +
+            "FROM products WHERE name ILIKE ? OR code ILIKE ? ORDER BY name";
+    private final String SQL_FIND_PRODUCT_AND_CATEGORY = "SELECT p.*, c.name AS category FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY p.name";
 
     private static final Logger logger = LoggerFactory.getLogger(ProductDAO.class);
     //CRUD METHODS ESTANDAR

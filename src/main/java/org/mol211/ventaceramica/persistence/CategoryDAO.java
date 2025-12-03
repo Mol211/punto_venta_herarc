@@ -33,10 +33,11 @@ public class CategoryDAO {
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
     private final String SQL_COUNT = "SELECT COUNT(*) FROM products WHERE category_id = ?";
     private final String SQL_FIND_BY_NAME = "SELECT id, name, description, created_at FROM categories WHERE name ILIKE ? ORDER BY name";
-    private final String SQL_FIND_ALL = "SELECT id, name, description, created_at FROM categories";
+    private final String SQL_FIND_ALL = "SELECT id, name, description, created_at FROM categories ORDER BY name";
     private  final String SQL_FIND_BY_ID = "SELECT id, name, description, created_at FROM categories WHERE id = ?";
     private final String SQL_DELETE = "DELETE FROM categories WHERE id = ?";
-    private final String SQL_SAVE = "INSERT INTO categories (name, description, created_at) VALUES(?,?,?)";
+    private final String SQL_SAVE = "INSERT INTO categories (name, description) VALUES(?,?) RETOURNING id";
+    private final String SQL_UPDATE = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
 
     public Category save(Category c){
         //Consulta SQL
@@ -63,10 +64,9 @@ public class CategoryDAO {
         return c;
     }
     public boolean update(Category c){
-        String sql = "UPDATE categories SET name = ?, description = ? WHERE id = ?" ;
 
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_UPDATE)){
 
             stmt.setString(1,c.getName());
             stmt.setString(2,c.getDescription());
