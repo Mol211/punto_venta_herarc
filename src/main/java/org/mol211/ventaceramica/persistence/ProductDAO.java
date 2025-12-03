@@ -25,18 +25,35 @@ public class ProductDAO {
     //FindLowStock -> Devuelve los que tienen poco stock
     //UpdateStock
     //search(String query) -> Devuelve lista de productos
+    private final String SQL_FIND_ALL="SELECT * FROM products ORDER BY name";
+    private final String SQL_FIND_BY_ID = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
+    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id, created_at) " +
+            "VALUES(?,?,?,?,?,?,?)";
+    private final String SQL_UPDATE = "UPDATE products SET code = ?, name = ?, description = ?, " +
+            "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
+    private final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
+    private final String SQL_FIND_BY_CODE = "SELECT id, code, name, description, price, stock, category_id, created_at " +
+            "FROM products WHERE code = ?";
+    private final String SQL_FIND_BY_NAME = "SELECT id, code, name, description, price, stock, category_id, created_at " +
+            "FROM products WHERE name ILIKE ? ORDER BY name";
+    private final String SQL_FIND_BY_CATEGORY = "SELECT id, code, name, description, price, stock, category_id, created_at " +
+            "FROM products WHERE category_id = ? ORDER BY name";
+    private final String SQL_FIND_LOW_STOCK = "SELECT id, code, name, description, price, stock, category_id, created_at" +
+            "FROM products WHERE stock < 5";
+    private final String SQL_UPDATE_STOCK = "UPDATE products SET stock = ? WHERE id = ?";
+    private final String SQL_SEARCH_BY_QUERY = "";
+
     private static final Logger logger = LoggerFactory.getLogger(ProductDAO.class);
     //CRUD METHODS ESTANDAR
     public List<Product> findAll() {
         List<Product> productos = new ArrayList<>();
-        String sql = "SELECT * FROM products ORDER BY id";
 
         //Obtener una instancia única
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
         //Obtener una conexión (crear nueva)
         try (Connection conn = dbConnection.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(SQL_FIND_ALL);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 productos.add(resultSetToProducto(rs));
@@ -47,12 +64,11 @@ public class ProductDAO {
         return productos;
     }
     public Product findById(Long id){
-        String sql = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
         Product p = null;
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
         try (Connection conn = dbConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+            PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_ID)){
 
             stmt.setLong(1,id);
 
@@ -67,12 +83,10 @@ public class ProductDAO {
         return p;
     }
     public boolean update(Product p){
-        String sql = "UPDATE products SET code = ?, name = ?, description = ?, " +
-                "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
 
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_UPDATE)){
 
             stmt.setString(1,p.getCode());
             stmt.setString(2,p.getName());
@@ -92,12 +106,10 @@ public class ProductDAO {
         }
     }
     public Product save(Product p){
-    String sql = "INSERT INTO products(code, name, description, price, stock, category_id, created_at) " +
-            "VALUES(?,?,?,?,?,?,?)";
     DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
     try (Connection conn = dbConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+         PreparedStatement stmt = conn.prepareStatement(SQL_SAVE, Statement.RETURN_GENERATED_KEYS)){
         stmt.setString(1,p.getCode());
         stmt.setString(2,p.getName());
         stmt.setString(3,p.getDescription());
@@ -118,11 +130,10 @@ public class ProductDAO {
     return p;
 }
     public void delete(Long id) {
-        String sql = "DELETE FROM products WHERE id = ?";
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_DELETE)){
             stmt.setLong(1, id);
             stmt.executeUpdate();
 
@@ -134,14 +145,11 @@ public class ProductDAO {
 
     //ESPECIFIC METHODS
     public Product findByCode(String code){
-            String sql = "SELECT id, code, name, description, price, stock, category_id, created_at " +
-                    "FROM products " +
-                    "WHERE code = ?";
             Product p = null;
             DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
             try (Connection conn = dbConnection.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)){
+                 PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_CODE)){
                 stmt.setString(1,code);
 
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -155,14 +163,10 @@ public class ProductDAO {
             return p;
     }
     public List<Product> findByName(String name) {
-        String sql = "SELECT id, code, name, description, price, stock, category_id, created_at " +
-                "FROM products " +
-                "WHERE name ILIKE ? " +
-                "ORDER BY name";
         List<Product> products = new ArrayList<>();
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_NAME)){
             stmt.setString(1,"%"+name+"%");
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -175,14 +179,10 @@ public class ProductDAO {
         return products;
     }
     public List<Product> findByCategory(Long categoryID){
-        String sql = "SELECT id, code, name, description, price, stock, category_id, created_at " +
-                "FROM products " +
-                "WHERE category_id = ? " +
-                "ORDER BY name";
         List<Product> products = new ArrayList<>();
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_CATEGORY)){
             stmt.setLong(1,categoryID);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -195,11 +195,10 @@ public class ProductDAO {
         return products;
     }
     public boolean updateStock(Long productId, int newStock){
-        String sql = "UPDATE products SET stock = ? WHERE id = ?" ;
 
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
+             PreparedStatement stmt = conn.prepareStatement(SQL_UPDATE_STOCK)){
 
             stmt.setInt(1,newStock);
             stmt.setLong(2,productId);
@@ -213,5 +212,9 @@ public class ProductDAO {
             return false;
         }
     }
+
+    //FALTAN:
+    // public List<Product> findLowStock (){}
+    // public List<Product> searchByQuery (String query) {}
 
 }
