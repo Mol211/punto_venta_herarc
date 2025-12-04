@@ -40,11 +40,9 @@ public class CategoryDAO {
     private final String SQL_UPDATE = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
 
     public Category save(Category c){
-        //Consulta SQL
-        String sql = SQL_SAVE;
         //Abrimos conexión y preparamos consulta
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_SAVE, PreparedStatement.RETURN_GENERATED_KEYS)) {
             //Añadimos parámetros
             ps.setString(1, c.getName());
             ps.setString(2, c.getDescription());

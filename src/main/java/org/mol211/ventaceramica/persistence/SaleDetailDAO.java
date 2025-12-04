@@ -29,10 +29,10 @@ public class SaleDetailDAO {
   private final String SQL_FIND_DETAILS_BY_PRODUCT = "SELECT SELECT id, sale_id, product_id, quantity, unit_price, subtotal" +
           "FROM sale_details WHERE product_id = ? ORDER BY id DESC";
   private final String SQL_GET_TOTAL_QUANTITY_SOLD = "SELECT SUM(quantity) FROM sale_details WHERE product_id = ?";
-  private final String SQL_GET_TOP_SELLING_PRODUCTS = "SELECT d.product_id, p.name AS product_name," +
-          "SUM(d.quantity) AS total_sold, SUM(d.subtotal) AS total_revenue" +
-          "FROM sale_details d" +
-          "INNER JOIN products p ON d.product_id = p.id" +
+  private final String SQL_GET_TOP_SELLING_PRODUCTS = "SELECT d.product_id, p.name AS product_name, " +
+          "SUM(d.quantity) AS total_sold, SUM(d.subtotal) AS total_revenue " +
+          "FROM sale_details d " +
+          "INNER JOIN products p ON d.product_id = p.id " +
           " GROUP BY d.product_id, p.name ORDER BY total_sold DESC LIMIT ?";
 
 }
