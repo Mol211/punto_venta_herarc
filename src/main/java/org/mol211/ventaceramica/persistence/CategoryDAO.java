@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static org.mol211.ventaceramica.mappers.CategoryMapper.rsToCategory;
 
 public class CategoryDAO {
@@ -36,18 +37,16 @@ public class CategoryDAO {
     private final String SQL_FIND_ALL = "SELECT id, name, description, created_at FROM categories ORDER BY name";
     private  final String SQL_FIND_BY_ID = "SELECT id, name, description, created_at FROM categories WHERE id = ?";
     private final String SQL_DELETE = "DELETE FROM categories WHERE id = ?";
-    private final String SQL_SAVE = "INSERT INTO categories (name, description) VALUES(?,?) RETOURNING id";
+    private final String SQL_SAVE = "INSERT INTO categories (name, description) VALUES(?,?) RETURNING id";
     private final String SQL_UPDATE = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
 
     public Category save(Category c){
         //Abrimos conexión y preparamos consulta
         try (Connection conn = dbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_SAVE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_SAVE, RETURN_GENERATED_KEYS)) {
             //Añadimos parámetros
             ps.setString(1, c.getName());
             ps.setString(2, c.getDescription());
-            ps.setTimestamp(3, Timestamp.valueOf(c.getCreatedAt()));
-
             //Ejecutamos inserción
             ps.executeUpdate();
             //Obtenemos el ID generado

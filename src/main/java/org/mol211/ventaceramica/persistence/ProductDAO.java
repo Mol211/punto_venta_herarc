@@ -1,6 +1,7 @@
 package org.mol211.ventaceramica.persistence;
 
 import org.mol211.ventaceramica.model.Product;
+import org.mol211.ventaceramica.model.ProductWithCategoryDTO;
 import org.mol211.ventaceramica.util.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mol211.ventaceramica.mappers.ProductMapper.resultSetToProdAndCat;
 import static org.mol211.ventaceramica.mappers.ProductMapper.resultSetToProducto;
 
 public class ProductDAO {
@@ -28,7 +30,7 @@ public class ProductDAO {
     private final String SQL_FIND_ALL="SELECT id, code, name, description, price, stock, category_id, created_at FROM products ORDER BY name";
     private final String SQL_FIND_BY_ID = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
     private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id) " +
-            "VALUES(?,?,?,?,?,?) RETOURNING id";
+            "VALUES(?,?,?,?,?,?) RETURNING id";
     private final String SQL_UPDATE = "UPDATE products SET code = ?, name = ?, description = ?, " +
             "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
     private final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
@@ -38,12 +40,17 @@ public class ProductDAO {
             "FROM products WHERE name ILIKE ? ORDER BY name";
     private final String SQL_FIND_BY_CATEGORY = "SELECT id, code, name, description, price, stock, category_id, created_at " +
             "FROM products WHERE category_id = ? ORDER BY name";
-    private final String SQL_FIND_LOW_STOCK = "SELECT id, code, name, description, price, stock, category_id, created_at" +
+    private final String SQL_FIND_LOW_STOCK = "SELECT id, code, name, description, price, stock, category_id, created_at " +
             "FROM products WHERE stock < ? ORDER BY stock ASC";
     private final String SQL_UPDATE_STOCK = "UPDATE products SET stock = ? WHERE id = ?";
     private final String SQL_SEARCH_BY_QUERY = "SELECT id, code, name, description, price, stock, category_id, created_at " +
             "FROM products WHERE name ILIKE ? OR code ILIKE ? ORDER BY name";
-    private final String SQL_FIND_PRODUCT_AND_CATEGORY = "SELECT p.*, c.name AS category FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY p.name";
+    public static final String SQL_FIND_PRODUCT_AND_CATEGORY =
+            "SELECT p.*, c.name AS category " +
+                    "FROM products p " +
+                    "INNER JOIN categories c ON p.category_id = c.id " +
+                    "WHERE p.category_id = ? " +
+                    "ORDER BY p.name";
 
     private static final Logger logger = LoggerFactory.getLogger(ProductDAO.class);
     //CRUD METHODS ESTANDAR
@@ -54,9 +61,9 @@ public class ProductDAO {
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
         //Obtener una conexión (crear nueva)
-        try (Connection conn = dbConnection.getConnection()) {
+        try (Connection conn = dbConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_ALL);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery()){
             while (rs.next()) {
                 productos.add(resultSetToProducto(rs));
             }
@@ -71,7 +78,6 @@ public class ProductDAO {
 
         try (Connection conn = dbConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_ID)){
-
             stmt.setLong(1,id);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -118,7 +124,6 @@ public class ProductDAO {
         stmt.setDouble(4,p.getPrice());
         stmt.setInt(5,p.getStock());
         stmt.setLong(6,p.getCategoryId());
-        stmt.setTimestamp(7, Timestamp.valueOf(p.getCreatedAt()));
 
         stmt.executeUpdate();
         try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -216,7 +221,65 @@ public class ProductDAO {
     }
 
     //FALTAN:
-    // public List<Product> findLowStock (){}
-    // public List<Product> searchByQuery (String query) {}
+    //"SELECT id, code, name, description, price, stock, category_id, created_at" +
+    //            "FROM products WHERE stock < ? ORDER BY stock ASC";
+    public List<Product> findLowStock (int stock){
+        List<Product> products = new ArrayList<>();
+        DatabaseConnection connection = DatabaseConnection.getInstance();
+        try(Connection conn =  connection.getConnection();
+       PreparedStatement ps = conn.prepareStatement(SQL_FIND_LOW_STOCK)){
+            ps.setInt(1,stock);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()) {
+                    products.add(resultSetToProducto(rs));
+                }
+            }
+        }catch(SQLException e){
+            logger.error(e.getMessage());
+        }
+        return products;
+    }
+
+    //"SELECT id, code, name, description, price, stock, category_id, created_at " +
+    //            "FROM products WHERE name ILIKE ? OR code ILIKE ? ORDER BY name";
+     public List<Product> searchByQuery (String query) {
+         List<Product> products = new ArrayList<>();
+         DatabaseConnection db = DatabaseConnection.getInstance();
+         try(Connection conn = db.getConnection();
+         PreparedStatement pr = conn.prepareStatement(SQL_SEARCH_BY_QUERY)){
+             String q = "%"+query+"%";
+             pr.setString(1, q);
+             pr.setString(2, q);
+             try(ResultSet rs = pr.executeQuery()){
+                 while(rs.next()){
+                     products.add(resultSetToProducto(rs));
+                 }
+             }
+         }catch(SQLException e){
+             logger.info(e.getMessage());
+         }
+         return products;
+     }
+
+     //"SELECT p.*, c.name AS category FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY p.name";
+    public List<ProductWithCategoryDTO> findProductAndCategoryBycategoryId(Long id){
+
+        List<ProductWithCategoryDTO> products = new ArrayList<>();
+
+        DatabaseConnection db = DatabaseConnection.getInstance();
+
+        try(Connection con = db.getConnection();
+        PreparedStatement pr = con.prepareStatement(SQL_FIND_PRODUCT_AND_CATEGORY)){
+            pr.setLong(1, id);
+            try(ResultSet rs = pr.executeQuery()){
+                while(rs.next()) {
+                    products.add(resultSetToProdAndCat(rs));
+                }
+            }
+        }catch (SQLException e){
+            logger.error(e.getMessage());
+        }
+        return products;
+    }
 
 }
