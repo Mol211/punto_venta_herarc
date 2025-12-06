@@ -1,10 +1,11 @@
 package org.mol211.ventaceramica.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Sale {
     private Long id;
-    private LocalDateTime sale_date;
+    private LocalDate sale_date;
     private Double totalPrice;
     private PaymentMethod paymentMethod;
     private Long customer_id;
@@ -18,11 +19,11 @@ public class Sale {
         this.id = id;
     }
 
-    public LocalDateTime getSale_date() {
+    public LocalDate getSale_date() {
         return sale_date;
     }
 
-    public void setSale_date(LocalDateTime sale_date) {
+    public void setSale_date(LocalDate sale_date) {
         this.sale_date = sale_date;
     }
 
@@ -61,7 +62,7 @@ public class Sale {
     public Sale() {
     }
 
-    public Sale(Long id, LocalDateTime sale_date, Double totalPrice, PaymentMethod paymentMethod, Long customer_id, LocalDateTime createdAt) {
+    public Sale(Long id, LocalDate sale_date, Double totalPrice, PaymentMethod paymentMethod, Long customer_id, LocalDateTime createdAt) {
         this.id = id;
         this.sale_date = sale_date;
         this.totalPrice = totalPrice;
