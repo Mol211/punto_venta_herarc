@@ -35,7 +35,7 @@ public class SaleDAO {
             "customer_id, payment_method, created_at FROM sales ORDER BY sale_date DESC";
     private final String SQL_FIND_BY_ID = "SELECT id, sale_date, total, customer_id, payment_method, created_at FROM sales WHERE id = ?";
     private final String SQL_SAVE = "INSERT INTO sales (sale_date, total, customer_id, payment_method) VALUES (?,?,?,?) RETOURNING id";
-    private final String SQL_UPDATE = "UPDATE sales SET sale_date = ?, total = ?, customer_id = ?, payment_method = ?";
+    private final String SQL_UPDATE = "UPDATE sales SET sale_date = ?, total = ?, customer_id = ?, payment_method = ? WHERE id = ?";
     private final String SQL_DELETE = "DELETE FROM sales WHERE id = ?";
     //Especific
     private final String SQL_FIND_BY_CUSTOMER = "SELECT id, sale_date, total, customer_id, payment_method, created_at FROM sales WHERE costumer_id = ORDER BY sale_date DESC";
@@ -76,6 +76,7 @@ public class SaleDAO {
             statement.setDouble(2, s.getTotalPrice());
             statement.setLong(3, s.getCustomer_id());
             statement.setString(4, s.getPaymentMethod().name());
+            statement.setLong(5,s.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
