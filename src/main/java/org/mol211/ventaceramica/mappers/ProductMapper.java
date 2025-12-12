@@ -16,7 +16,7 @@ public class ProductMapper {
             rs.getDouble("price"),
             rs.getInt("stock"),
             rs.getLong("category_id"),
-            rs.getTimestamp("created_at").toLocalDateTime());
+            rs.getString("image"));
     return p;
   }
   public static ProductWithCategoryDTO resultSetToProdAndCat(ResultSet rs) throws SQLException {

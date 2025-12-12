@@ -27,10 +27,10 @@ public class ProductDAO {
     //FindLowStock -> Devuelve los que tienen poco stock
     //UpdateStock
     //search(String query) -> Devuelve lista de productos
-    private final String SQL_FIND_ALL="SELECT id, code, name, description, price, stock, category_id, created_at FROM products ORDER BY name";
+    private final String SQL_FIND_ALL="SELECT id, code, name, description, price, stock, category_id, image, created_at FROM products ORDER BY name";
     private final String SQL_FIND_BY_ID = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
-    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id) " +
-            "VALUES(?,?,?,?,?,?) RETURNING id";
+    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id, image) " +
+            "VALUES(?,?,?,?,?,?,?) RETURNING id";
     private final String SQL_UPDATE = "UPDATE products SET code = ?, name = ?, description = ?, " +
             "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
     private final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
@@ -124,6 +124,7 @@ public class ProductDAO {
         stmt.setDouble(4,p.getPrice());
         stmt.setInt(5,p.getStock());
         stmt.setLong(6,p.getCategoryId());
+        stmt.setString(7,p.getImage());
 
         stmt.executeUpdate();
         try (ResultSet rs = stmt.getGeneratedKeys()) {
