@@ -27,12 +27,14 @@ public class ProductDAO {
     //FindLowStock -> Devuelve los que tienen poco stock
     //UpdateStock
     //search(String query) -> Devuelve lista de productos
-    private final String SQL_FIND_ALL="SELECT id, code, name, description, price, stock, category_id, created_at FROM products ORDER BY name";
+    private final String SQL_FIND_ALL="SELECT p.*, c.name AS category " +
+            "FROM products p " +
+            "INNER JOIN categories c ON p.category_id = c.id ";
     private final String SQL_FIND_BY_ID = "SELECT id, code, name, description, price, stock, category_id, created_at FROM products WHERE id=?";
-    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id) " +
-            "VALUES(?,?,?,?,?,?) RETURNING id";
+    private final String SQL_SAVE = "INSERT INTO products(code, name, description, price, stock, category_id, image) " +
+            "VALUES(?,?,?,?,?,?,?) RETURNING id";
     private final String SQL_UPDATE = "UPDATE products SET code = ?, name = ?, description = ?, " +
-            "price = ?, stock = ?, category_id= ? WHERE id = ?" ;
+            "price = ?, stock = ?, category_id= ?, image=? WHERE id = ?" ;
     private final String SQL_DELETE = "DELETE FROM products WHERE id = ?";
     private final String SQL_FIND_BY_CODE = "SELECT id, code, name, description, price, stock, category_id, created_at " +
             "FROM products WHERE code = ?";
@@ -54,8 +56,8 @@ public class ProductDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductDAO.class);
     //CRUD METHODS ESTANDAR
-    public List<Product> findAll() {
-        List<Product> productos = new ArrayList<>();
+    public List<ProductWithCategoryDTO> findAll() {
+        List<ProductWithCategoryDTO> productos = new ArrayList<>();
 
         //Obtener una instancia única
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
@@ -65,7 +67,7 @@ public class ProductDAO {
             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_ALL);
             ResultSet rs = stmt.executeQuery()){
             while (rs.next()) {
-                productos.add(resultSetToProducto(rs));
+                productos.add(resultSetToProdAndCat(rs));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -102,7 +104,8 @@ public class ProductDAO {
             stmt.setDouble(4,p.getPrice());
             stmt.setInt(5,p.getStock());
             stmt.setLong(6,p.getCategoryId());
-            stmt.setLong(7,p.getId());
+            stmt.setString(7,p.getImage());
+            stmt.setLong(8,p.getId());
 
             int rows = stmt.executeUpdate();
             //Si se ha ejecutado la modificación se devuelve un número mayor que cero
@@ -124,6 +127,7 @@ public class ProductDAO {
         stmt.setDouble(4,p.getPrice());
         stmt.setInt(5,p.getStock());
         stmt.setLong(6,p.getCategoryId());
+        stmt.setString(7,p.getImage());
 
         stmt.executeUpdate();
         try (ResultSet rs = stmt.getGeneratedKeys()) {

@@ -11,6 +11,15 @@ public class Product {
     private Integer stock;
     private Long categoryId;
     private LocalDateTime createdAt;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Long getId() {
         return id;
@@ -94,7 +103,7 @@ public class Product {
                 '}';
     }
 
-    public Product(Long id, String code, String name, String description, Double price, Integer stock, Long category_id, LocalDateTime localDateTime) {
+    public Product(Long id,String code, String name, String description, Double price, Integer stock, Long category_id, String image) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -102,6 +111,6 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.categoryId = category_id;
-        this.createdAt = localDateTime;
+        this.image = image;
     }
 }

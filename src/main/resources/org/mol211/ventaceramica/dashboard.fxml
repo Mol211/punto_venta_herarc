@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mol211.ventaceramica.controller.DashboardController">
+    <children>
+        <AnchorPane fx:id="panel_main" prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <BorderPane layoutX="64.0" layoutY="14.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <top>
+                        <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="semi-top-form" stylesheets="@style/dashboardDesign.css" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="209.0" layoutY="-77.0" prefHeight="35.0" prefWidth="1100.0" styleClass="top-form" stylesheets="@style/dashboardDesign.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <Label layoutX="28.0" layoutY="8.0" prefHeight="18.0" prefWidth="281.0" text="Inventory Management System">
+                                            <font>
+                                                <Font name="Tahoma" size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="btn_close" layoutX="1048.0" layoutY="4.0" mnemonicParsing="false" onAction="#close" prefHeight="27.0" prefWidth="54.0" styleClass="close" stylesheets="@style/dashboardDesign.css" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
+                                        <Button fx:id="btn_minimize" layoutX="985.0" layoutY="6.0" mnemonicParsing="false" onAction="#minimize" prefHeight="27.0" prefWidth="54.0" styleClass="minimize" stylesheets="@style/dashboardDesign.css" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="2.0" />
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </top>
+                    <left>
+                        <AnchorPane prefHeight="555.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutY="117.0" prefHeight="555.0" prefWidth="200.0" styleClass="nav-form" stylesheets="@style/dashboardDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <Label alignment="CENTER" layoutX="1.0" layoutY="132.0" prefHeight="18.0" prefWidth="199.0" text="Welcome" textFill="WHITE">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutY="162.0" prefHeight="18.0" prefWidth="200.0" text="Heraceramic" textFill="WHITE">
+                                            <font>
+                                                <Font name="Arial Bold" size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Line endX="100.0" layoutX="102.0" layoutY="195.0" startX="-100.0" stroke="WHITE" />
+                                        <Button fx:id="btn_navbar_home" layoutX="12.0" layoutY="208.0" mnemonicParsing="false" onAction="#showHome" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@style/dashboardDesign.css" text="Home" />
+                                        <Button fx:id="btn_navbar_addProducts" layoutX="10.0" layoutY="243.0" mnemonicParsing="false" onAction="#showProduct" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@style/dashboardDesign.css" text="Add Products" />
+                                        <Button fx:id="btn_navbar_orders" layoutX="12.0" layoutY="278.0" mnemonicParsing="false" onAction="#showOrder" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@style/dashboardDesign.css" text="Orders" />
+                                        <Button fx:id="btn_addProducts_signOut" layoutX="12.0" layoutY="503.0" mnemonicParsing="false" onAction="#logout" prefHeight="38.0" prefWidth="180.0" stylesheets="@style/dashboardDesign.css" text="Sign Out">
+                                            <styleClass>
+                                                <String fx:value="nav-btn-sgn-out" />
+                                                <String fx:value="shadow" />
+                                            </styleClass></Button>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </left>
+                    <center>
+                        <AnchorPane fx:id="aPane_center" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

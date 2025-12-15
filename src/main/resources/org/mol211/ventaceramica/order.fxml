@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="panel_orders" prefHeight="555.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mol211.ventaceramica.controller.OrderController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="12.0" prefHeight="532.0" prefWidth="529.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <TableView fx:id="tbView_addOrders" layoutX="14.0" layoutY="14.0" prefHeight="507.0" prefWidth="509.0">
+               <columns>
+                  <TableColumn fx:id="tbcol_orders_category" prefWidth="106.0" text="Category" />
+                  <TableColumn fx:id="tbcol_orders_codProd" prefWidth="75.0" text="Code" />
+                  <TableColumn fx:id="tbcol_orders_nameProd" prefWidth="142.0" text="Product Name" />
+                  <TableColumn fx:id="tbcol_orders_quantity" prefWidth="91.0" text="Quantity" />
+                  <TableColumn fx:id="tbcol_orders_total" prefWidth="94.0" text="Price" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="557.0" layoutY="12.0" prefHeight="532.0" prefWidth="326.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <Label layoutX="41.0" layoutY="33.0" prefHeight="18.0" prefWidth="62.0" text="Category:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbox_orders_category" layoutX="125.0" layoutY="29.0" prefWidth="150.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="13.0" layoutY="72.0" prefHeight="18.0" prefWidth="88.0" text="Code Product:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbox_orders_codProd" layoutX="125.0" layoutY="68.0" prefWidth="150.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="9.0" layoutY="112.0" prefHeight="18.0" prefWidth="96.0" text="Product Name:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbox_orders_name" layoutX="125.0" layoutY="109.0" prefWidth="150.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="47.0" layoutY="152.0" prefHeight="18.0" prefWidth="58.0" text="Quantity:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="spin_orders_quantity" layoutX="126.0" layoutY="149.0" prefHeight="26.0" prefWidth="107.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="101.0" layoutY="278.0" prefHeight="23.0" prefWidth="49.0" text="Total:">
+               <font>
+                  <Font name="Tahoma" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_orders_total" layoutX="159.0" layoutY="278.0" prefHeight="23.0" prefWidth="122.0" text="0.0 €">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="324.0" prefHeight="23.0" prefWidth="71.0" text="Amount:">
+               <font>
+                  <Font name="Tahoma" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_orders_amount" layoutX="118.0" layoutY="322.0" prefHeight="26.0" prefWidth="140.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="87.0" layoutY="365.0" prefHeight="23.0" prefWidth="72.0" text="Balance:">
+               <font>
+                  <Font name="Tahoma" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_orders_balance" layoutX="168.0" layoutY="365.0" prefHeight="23.0" prefWidth="108.0" text="0.0 €">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_orders_receipt" layoutX="53.0" layoutY="411.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="86.0" styleClass="receipt-btn" stylesheets="@style/dashboardDesign.css" text="Recepit" />
+            <Button fx:id="btn_orders_pay" layoutX="182.0" layoutY="411.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="86.0" styleClass="pay-btn" stylesheets="@style/dashboardDesign.css" text="Pay" />
+            <Button fx:id="btn_orders_reset" layoutX="53.0" layoutY="467.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="86.0" styleClass="clear-btn" stylesheets="@style/dashboardDesign.css" text="Reset" />
+            <Button fx:id="btn_orders_add" layoutX="200.0" layoutY="201.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="86.0" styleClass="add-btn" stylesheets="@style/dashboardDesign.css" text="Add" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

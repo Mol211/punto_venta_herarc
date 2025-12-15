@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="panel_home" prefHeight="555.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mol211.ventaceramica.controller.HomeController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="158.0" prefWidth="872.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <AnchorPane layoutX="14.0" layoutY="8.0" prefHeight="141.0" prefWidth="267.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="nav-form" />
+                  <String fx:value="card" />
+               </styleClass>
+               <children>
+                  <Label layoutX="20.0" layoutY="56.0" prefHeight="30.0" prefWidth="227.0" text="Today's Number of Order" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_home_numberOrder" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="14.0" prefHeight="2.0" prefWidth="195.0" text="0" textFill="WHITE">
+                     <font>
+                        <Font name="Comic Sans MS" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="303.0" layoutY="8.0" prefHeight="141.0" prefWidth="267.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="nav-form" />
+                  <String fx:value="card" />
+               </styleClass>
+               <children>
+                  <Label layoutX="70.0" layoutY="56.0" prefHeight="30.0" prefWidth="128.0" text="Total Income" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_home_totalIncome" alignment="CENTER_RIGHT" layoutX="55.0" layoutY="14.0" prefHeight="2.0" prefWidth="195.0" text="0.0€" textFill="WHITE">
+                     <font>
+                        <Font name="Comic Sans MS" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="591.0" layoutY="9.0" prefHeight="141.0" prefWidth="267.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="nav-form" />
+                  <String fx:value="card" />
+               </styleClass>
+               <children>
+                  <Label layoutX="48.0" layoutY="56.0" prefHeight="30.0" prefWidth="172.0" text="Available Products" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_home_avaialableProd" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="14.0" prefHeight="2.0" prefWidth="195.0" text="0" textFill="WHITE">
+                     <font>
+                        <Font name="Comic Sans MS" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="13.0" layoutY="193.0" prefHeight="352.0" prefWidth="872.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <AnchorPane layoutX="14.0" layoutY="18.0" prefHeight="316.0" prefWidth="440.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="white-bg" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <children>
+                  <AreaChart fx:id="chart_home_income" layoutX="-60.0" layoutY="-48.0" prefHeight="352.0" prefWidth="440.0" title="Income Data Chart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </AreaChart>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="465.0" layoutY="18.0" prefHeight="316.0" prefWidth="393.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="white-bg" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <children>
+                  <BarChart fx:id="chart_home_orders" layoutX="-22.0" layoutY="-42.0" prefHeight="358.0" prefWidth="478.0" title="Orders Data Chart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <Line endX="772.0" layoutX="115.0" layoutY="183.0" startX="-100.0" stroke="#1f511f" />
+   </children>
+</AnchorPane>

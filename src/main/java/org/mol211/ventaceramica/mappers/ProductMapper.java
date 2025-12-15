@@ -16,7 +16,7 @@ public class ProductMapper {
             rs.getDouble("price"),
             rs.getInt("stock"),
             rs.getLong("category_id"),
-            rs.getTimestamp("created_at").toLocalDateTime());
+            rs.getString("image"));
     return p;
   }
   public static ProductWithCategoryDTO resultSetToProdAndCat(ResultSet rs) throws SQLException {
@@ -29,7 +29,19 @@ public class ProductMapper {
             rs.getInt("stock"),
             rs.getLong("category_id"),
             rs.getString("category"),
-            rs.getTimestamp("created_at").toLocalDateTime());
+            rs.getString("image"));
     return p;
+  }
+  public static Product mapDTOtoProduct(ProductWithCategoryDTO p){
+    return new Product(
+            p.getId(),
+            p.getCode(),
+            p.getName(),
+            p.getDescription(),
+            p.getPrice(),
+            p.getStock(),
+            p.getCategoryId(),
+            p.getImage()
+    );
   }
 }

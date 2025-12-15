@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="panel_addProducts" prefHeight="555.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mol211.ventaceramica.controller.ProductController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="529.0" prefWidth="268.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <AnchorPane layoutX="77.0" layoutY="14.0" prefHeight="128.0" prefWidth="115.0" stylesheets="@style/dashboardDesign.css">
+               <styleClass>
+                  <String fx:value="white-bg" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <children>
+                  <ImageView fx:id="imView_addProduct" fitHeight="128.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="btn_addProduct_import" layoutY="101.0" mnemonicParsing="false" onAction="#addProductsImportImage" prefHeight="29.0" prefWidth="115.0" styleClass="import-btn" stylesheets="@style/dashboardDesign.css" text="Import" />
+               </children>
+            </AnchorPane>
+            <Label layoutX="14.0" layoutY="169.0" text="Cod_Prod:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_addProduct_codProd" layoutX="93.0" layoutY="165.0" prefHeight="26.0" prefWidth="164.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="38.0" layoutY="202.0" text="Name:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_addProduct_nameProd" layoutX="93.0" layoutY="198.0" prefHeight="26.0" prefWidth="165.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="20.0" layoutY="237.0" prefHeight="23.0" prefWidth="65.0" text="Category:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbox_addProduct_category" layoutX="93.0" layoutY="236.0" prefHeight="26.0" prefWidth="169.0" styleClass="textfield" />
+            <Button fx:id="btn_addProducts_add" layoutX="27.0" layoutY="424.0" mnemonicParsing="false" onAction="#createNewProduct" prefHeight="40.0" prefWidth="86.0" styleClass="add-btn" stylesheets="@style/dashboardDesign.css" text="Add" />
+            <Button fx:id="btn_addProducts_update" layoutX="157.0" layoutY="424.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="40.0" prefWidth="84.0" styleClass="update-btn" stylesheets="@style/dashboardDesign.css" text="Update" />
+            <Button fx:id="btn_addProducts_reset" layoutX="27.0" layoutY="475.0" mnemonicParsing="false" onAction="#resetNewProduct" prefHeight="40.0" prefWidth="86.0" styleClass="clear-btn" stylesheets="@style/dashboardDesign.css" text="Reset" />
+            <Button fx:id="btn_addProducts_delete" layoutX="157.0" layoutY="475.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="40.0" prefWidth="84.0" styleClass="delete-btn" stylesheets="@style/dashboardDesign.css" text="Delete" />
+            <Label layoutX="6.0" layoutY="271.0" prefHeight="23.0" prefWidth="81.0" text="Description:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="txta_addProduct_description" layoutX="7.0" layoutY="294.0" prefHeight="12.0" prefWidth="256.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="38.0" layoutY="391.0" prefHeight="18.0" prefWidth="44.0" text="Price:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_addProduct_Price" layoutX="93.0" layoutY="387.0" prefHeight="26.0" prefWidth="165.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+            <Label layoutX="38.0" layoutY="354.0" prefHeight="18.0" prefWidth="44.0" text="Stock:">
+               <font>
+                  <Font name="Tahoma" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_addProduct_stock" layoutX="93.0" layoutY="350.0" prefHeight="26.0" prefWidth="165.0" styleClass="textfield" stylesheets="@style/dashboardDesign.css" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="294.0" layoutY="14.0" prefHeight="529.0" prefWidth="593.0" stylesheets="@style/dashboardDesign.css">
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <TableView fx:id="tbView_addProducts" layoutX="8.0" layoutY="58.0" onMouseClicked="#showProductsSelected" prefHeight="466.0" prefWidth="579.0">
+               <columns>
+                  <TableColumn fx:id="tbcol_addProducts_codProd" prefWidth="98.0" text="Product Code" />
+                  <TableColumn fx:id="tbcol_addProducts_category" prefWidth="96.0" text="Category" />
+                  <TableColumn fx:id="tbcol_addProducts_nameProd" prefWidth="95.0" text="Name" />
+                  <TableColumn fx:id="tbcol_addProducts_description" minWidth="0.0" prefWidth="162.0" text="Description" />
+                  <TableColumn fx:id="tbcol_addProducts_price" minWidth="0.0" prefWidth="58.0" text="Price" />
+                  <TableColumn fx:id="tbcol_addProducts_stock" minWidth="0.0" prefWidth="66.0" text="Stock" />
+               </columns>
+            </TableView>
+            <TextField fx:id="txt_addProducts_searchBar" layoutX="14.0" layoutY="21.0" prefHeight="30.0" prefWidth="261.0" promptText="Search" styleClass="search" stylesheets="@style/dashboardDesign.css" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
